@@ -8,7 +8,7 @@
 
 \- Structured folder organization
 
-\- Drafted ADR-001 to ADR-004
+\- Drafted ADR-001 to ADR-003
 
 \- Wrote and formatted documentation
 
@@ -29,6 +29,8 @@
 \- Participated in review discussions
 
 \- Provided input on hardware feasibility
+
+\- Drafted ADR-004
 
 
 

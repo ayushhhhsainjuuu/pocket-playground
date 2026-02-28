@@ -1,82 +1,54 @@
-\# ADR-004: Data Storage
+# ADR-004: Data Storage
 
-
-
-\## Status
+## Status
 
 Approved
 
-
-
-\## Context
+## Context
 
 Pocket Playground is a hub-based Android application that contains multiple mini-games and interactive tools.
 
-The app may need to store:
+The app needs to persist lightweight, non-sensitive data including:
 
+- High scores
+- Basic user settings
+- Favorite games
+- Simple configuration data
 
+The application does not require user authentication, online accounts, real-time synchronization, or shared data across devices.
 
-\- High scores
+The selected storage solution must remain within the scope of this course and avoid unnecessary backend complexity or infrastructure setup.
 
-\- Basic user settings
+## Decision
 
-\- Favorite games
+We will use Local Storage (AsyncStorage in React Native) to store non-sensitive application data.
 
-\- Simple configuration data
+We will not implement a remote database (e.g., Firebase) or cloud-based storage for this project.
 
+Encryption will not be used because the stored data does not contain sensitive information.
 
+## Rationale
 
-The app does not require user accounts or cloud synchronization.
+- The application only stores non-sensitive data such as scores and preferences.
+- No real-time syncing or account system is required.
+- Local storage is sufficient and efficient for simple key-value persistence.
+- Avoids backend setup, authentication flows, and cloud configuration.
+- Reduces architectural complexity and development risk.
+- Ensures full offline functionality.
+- Keeps the project within semester scope and team capability.
 
+## Consequences
 
+### Positive
 
-The solution must remain within the scope of this course and avoid unnecessary backend complexity.
+- No internet dependency
+- Faster development and easier testing
+- No backend configuration required
+- Reliable offline operation
+- Lower architectural risk
 
+### Negative
 
-
-\## Decision
-
-We will use \*\*Local Storage (AsyncStorage or equivalent local storage solution)\*\*.
-
-
-
-We will not use a remote database (e.g., Firebase) for this project.
-
-
-
-\## Rationale
-
-\- The app does not require real-time syncing or online accounts.
-
-\- Local storage is sufficient for high scores and user preferences.
-
-\- Reduces setup complexity and deployment risk.
-
-\- Works offline.
-
-\- Keeps project scope manageable within semester timeline.
-
-
-
-\## Consequences
-
-
-
-\### Positive
-
-\- No internet dependency
-
-\- Faster development and easier testing
-
-\- No backend configuration required
-
-\- Better reliability for simple data needs
-
-
-
-\### Negative
-
-\- Data will not sync across multiple devices
-
-\- Data may be lost if the app is uninstalled
-
+- Data will not sync across multiple devices
+- Data may be lost if the app is uninstalled
+- Not suitable for future multi-user or cloud-based expansion without redesign

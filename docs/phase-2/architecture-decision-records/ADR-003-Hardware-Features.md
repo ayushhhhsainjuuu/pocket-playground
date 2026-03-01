@@ -26,11 +26,12 @@ We want hardware features that:
 
 \- are low-risk to implement and test
 
+\-provide insight into common mobile APIs and hardware features 
 
 
 \## Decision
 
-We will support the following hardware / device features:
+The App will support the following hardware / device features:
 
 
 
@@ -60,6 +61,8 @@ We will \*\*not\*\* require GPS or fingerprint authentication for Phase 2/4 beca
 
 \- Sensors support fun interactive experiences and align with the project’s learning goals.
 
+\- Encourages experimentation in mini-game and experience design. 
+
 \- Vibration and audio improve user feedback and game feel with minimal implementation risk.
 
 \- Avoiding GPS/fingerprint keeps the scope manageable and reduces device-permission complexity.
@@ -74,11 +77,11 @@ We will \*\*not\*\* require GPS or fingerprint authentication for Phase 2/4 beca
 
 \- Supports a variety of unique mini-games and tools
 
-\- Encourages experimentation with mobile APIs
+\- Minimal user permissions are required (especially for vibration/audio)
 
-\- Minimal user permissions required (especially for vibration/audio)
+\- Team gains experience with common hardware features
 
-\- Easier testing across team devices
+\- Common hardware enables easier testing across team devices
 
 
 
@@ -86,5 +89,5 @@ We will \*\*not\*\* require GPS or fingerprint authentication for Phase 2/4 beca
 
 \- Sensor behavior can vary between devices, requiring calibration/testing
 
-\- Audio and haptics must be implemented consistently to avoid noisy/annoying UX
+\- Testing must be done on team member's real mobile devices as computer emulators lack vibration and haptic hardware
 

@@ -30,11 +30,7 @@ The app will need:
 
 \## Decision
 
-We will use a combination of:
-
-\- Bottom Tab Navigation for top-level sections (Hub, Favorites/Library, Settings)
-
-\- Stack Navigation within each tab for navigating into individual games/tools
+We will use bottom Tab Navigation for top-level sections (Hub, Favorites/Library, settings.) And Stack Navigation within each tab for navigating into individual games/tools. 
 
 
 
@@ -58,7 +54,9 @@ We will use a combination of:
 
 \- Clear, predictable navigation for users
 
-\- Easy to add new games/tools as separate screens
+\- Clean UX with high prototypicality
+
+\- Modular system makes it easy to add new games/tools 
 
 \- Clean back-navigation behavior (Back to Hub)
 
@@ -70,5 +68,5 @@ We will use a combination of:
 
 \- Slightly more setup than using only a single navigator
 
-\- Requires a consistent “screen naming” convention to avoid confusion
+\- Requires screens to be named consistently and conventionally to avoid confusion 
 

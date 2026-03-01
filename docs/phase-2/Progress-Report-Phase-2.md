@@ -82,9 +82,11 @@ These challenges were resolved through scope refinement and focusing on modular,
 
 \### Keith
 
-\- Contributed to architectural discussions
+\- Participated in architecture review discussions 
 
 \- Provided feedback on hub layout and game integration
+
+\- Revised ADRs
 
 
 
@@ -93,6 +95,8 @@ These challenges were resolved through scope refinement and focusing on modular,
 \- Contributed to hardware feature discussions
 
 \- Reviewed scope feasibility for sensors and mobile APIs
+
+\- Drafted Architecture for Database Storage 
 
 
 
@@ -132,7 +136,9 @@ These challenges were resolved through scope refinement and focusing on modular,
 
 \### Keith
 
-\- Design game screen wireframes
+\- Design game and hub UI screen wireframes
+
+\- Draft a game/experience UI layout structure
 
 
 
@@ -140,3 +146,4 @@ These challenges were resolved through scope refinement and focusing on modular,
 
 \- Assist with UI consistency and feature planning
 
+\- Draft a game/experience UI layout structure

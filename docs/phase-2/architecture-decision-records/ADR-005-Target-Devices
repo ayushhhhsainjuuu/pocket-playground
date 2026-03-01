@@ -1,0 +1,74 @@
+ADR-005: Target Devices 
+
+Status 
+Approved 
+
+ 
+
+Context 
+
+Pocket Playground is a hub-based mobile application designed to host multiple mini-games and interactive tools that rely on device hardware (e.g., accelerometer, gyroscope, vibration, and audio output). 
+
+The course requirements specify support for both Android and iOS platforms. The team must choose an approach that ensures cross-platform compatibility while maintaining consistent performance, UI behavior, and access to hardware APIs. 
+
+Key considerations include: 
+
+Differences in hardware capabilities across devices 
+
+Variations in OS behavior and permissions handling 
+
+UI consistency across platforms 
+
+Development time constraints within the course timeline 
+
+The team’s prior experience with JavaScript and React 
+
+The architecture must support scalable growth of mini-games while minimizing platform-specific rework. 
+
+ 
+
+Decision 
+
+Pocket Playground will target both Android and iOS devices using a single shared codebase built with React Native. 
+
+Platform-specific adjustments will only be implemented when necessary for hardware permissions, UI conventions, or device-level optimizations. 
+
+ 
+
+Rationale 
+
+React Native supports cross-platform development from a unified JavaScript codebase. 
+
+Maintaining one shared architecture reduces development time and complexity. 
+
+Supporting both Android and iOS increases usability and demonstrates broader mobile development competency. 
+
+Cross-platform deployment aligns with industry best practices for scalable consumer apps. 
+
+Limiting platform-specific customizations ensures the project remains within course scope and timeline. 
+
+ 
+
+Consequences 
+
+Positive: 
+
+Broader accessibility across device ecosystems 
+
+Reduced duplication of code 
+
+Faster development compared to building two native apps 
+
+Consistent user experience across platforms 
+
+Demonstrates understanding of cross-platform architecture principles 
+
+Negative: 
+
+Potential platform-specific bugs requiring conditional logic 
+
+Hardware sensor behavior may vary between Android and iOS devices 
+
+UI elements may require minor adjustments to follow platform conventions 
+
+Additional testing required to validate functionality on both platforms 

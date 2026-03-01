@@ -18,19 +18,21 @@
 
 \### Keith
 
-\- Participated in review discussions
+\- Participated in architecture review discussions
 
-\- Provided conceptual feedback on game structure
+\- Provided conceptual feedback
+
+\- revised ADRs
 
 
 
 \### Anhad
 
-\- Participated in review discussions
+\- Participated hardware and scope discussions
 
 \- Provided input on hardware feasibility
 
-\- Drafted ADR-004
+\- Drafted Architecture for Database Storage 
 
 
 

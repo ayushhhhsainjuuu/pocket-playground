@@ -53,8 +53,8 @@ export default function GameCard({
 
         <View style={styles.textWrap}>
           <Text style={styles.title}>{title}</Text>
-          {!!description && <Text style={styles.description}>{description}</Text>}
-          {!!category && <Text style={styles.category}>{category}</Text>}
+          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.category}>{category}</Text>
         </View>
       </View>
 

@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
-import { FlatList, Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import GameCard from "../../components/GameCard";
 import { games } from "../../data/game";
@@ -15,17 +16,13 @@ export default function HomeScreen() {
     router.push(`/game/${id}`);
   }
 
-  async function goToHighScores() {
-    await Haptics.selectionAsync();
-  }
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerIcon}>
-        <Ionicons name="game-controller-outline" size={24} color="#FF5A1F" />
+      <View style={styles.titleContainer}>
+        <Ionicons name="game-controller-outline" size={36} color="#FF5A1F" />
+        <Text style={styles.title}>Pocket{"\n"}Playground</Text>
       </View>
 
-      <Text style={styles.title}>Pocket{"\n"}Playground</Text>
       <Text style={styles.subtitle}>Choose your adventure!</Text>
 
       <FlatList
@@ -38,17 +35,14 @@ export default function HomeScreen() {
             title={item.title}
             description={item.description}
             category={item.category}
+            icon={item.icon}
+            bg={item.bg}
+            iconBg={item.iconBg}
             isFavorite={isFavorite(item.id)}
             onPress={() => openGame(item.id)}
             onToggleFavorite={() => toggleFavorite(item.id)}
           />
         )}
-        ListFooterComponent={
-          <Pressable style={styles.highScoreBtn} onPress={goToHighScores}>
-            <Ionicons name="trophy-outline" size={16} color="#D97706" />
-            <Text style={styles.highScoreText}>View High Scores</Text>
-          </Pressable>
-        }
       />
     </SafeAreaView>
   );
@@ -61,9 +55,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 24,
   },
-  headerIcon: {
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
     marginBottom: 10,
     marginTop: 4,
+    marginLeft: -42,
   },
   title: {
     fontSize: 34,
@@ -81,22 +80,5 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingBottom: 30,
-  },
-  highScoreBtn: {
-    marginTop: 8,
-    backgroundColor: "#F7F2E8",
-    borderWidth: 1.5,
-    borderColor: "#F0B36E",
-    borderRadius: 10,
-    height: 46,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    gap: 8,
-  },
-  highScoreText: {
-    color: "#C2410C",
-    fontSize: 16,
-    fontWeight: "700",
   },
 });

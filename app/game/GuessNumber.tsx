@@ -1,28 +1,28 @@
 import * as Haptics from "expo-haptics";
+import { LinearGradient } from "expo-linear-gradient";
 import { Stack, router } from "expo-router";
 import { useState } from "react";
-import {
-    Pressable,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TextInput
-} from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { saveHighScore } from "../../services/storage";
 
 export default function GuessNumber() {
   const [target, setTarget] = useState(() => random());
   const [guess, setGuess] = useState("");
   const [msg, setMsg] = useState("Guess 1–100");
   const [attempts, setAttempts] = useState(0);
+  const [hasSavedScore, setHasSavedScore] = useState(false);
 
-  function handleGuess() {
+  async function handleGuess() {
     const num = Number(guess);
     if (!num) return;
 
-    setAttempts((a) => a + 1);
+    const nextAttempts = attempts + 1;
+    setAttempts(nextAttempts);
 
     if (num === target) {
       setMsg("Correct!");
+      await saveScore(nextAttempts);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } else if (num < target) {
       setMsg("Too low");
@@ -33,6 +33,19 @@ export default function GuessNumber() {
     setGuess("");
   }
 
+  async function saveScore(finalAttempts: number) {
+    if (hasSavedScore) return;
+
+    await saveHighScore({
+      gameId: "guess-number",
+      score: finalAttempts,
+      scoreLabel: "Attempts",
+      description: `${finalAttempts} attempts`,
+    });
+
+    setHasSavedScore(true);
+  }
+
   function reset() {
     setTarget(random());
     setGuess("");
@@ -41,32 +54,47 @@ export default function GuessNumber() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Stack.Screen options={{ headerShown: false }} />
+    <LinearGradient colors={["#F6A623", "#F8BD4B"]} style={styles.container}>
+      <SafeAreaView style={styles.safeArea}>
+        <Stack.Screen options={{ headerShown: false }} />
 
-      <Text style={styles.title}>Guess Number</Text>
-      <Text>{msg}</Text>
-      <Text>Attempts: {attempts}</Text>
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Guess Number</Text>
+            <Text style={styles.subtitle}>{msg}</Text>
+            <Text style={styles.attempts}>Attempts: {attempts}</Text>
+          </View>
 
-      <TextInput
-        style={styles.input}
-        value={guess}
-        onChangeText={setGuess}
-        keyboardType="numeric"
-      />
+          <View style={styles.boardCard}>
+            <TextInput
+              style={styles.input}
+              value={guess}
+              onChangeText={setGuess}
+              keyboardType="numeric"
+              placeholder="Enter your guess"
+              placeholderTextColor="#9CA3AF"
+            />
 
-      <Pressable style={styles.btn} onPress={handleGuess}>
-        <Text>Submit</Text>
-      </Pressable>
+            <Pressable style={styles.submitBtn} onPress={handleGuess}>
+              <Text style={styles.submitText}>Submit Guess</Text>
+            </Pressable>
+          </View>
 
-      <Pressable style={styles.btn} onPress={reset}>
-        <Text>Reset</Text>
-      </Pressable>
+          <View style={styles.actions}>
+            <Pressable style={styles.actionBtn} onPress={reset}>
+              <Text style={styles.actionText}>New Game</Text>
+            </Pressable>
 
-      <Pressable style={styles.btn} onPress={() => router.push("/")}>
-        <Text>Menu</Text>
-      </Pressable>
-    </SafeAreaView>
+            <Pressable
+              style={styles.actionBtn}
+              onPress={() => router.push("/")}
+            >
+              <Text style={styles.actionText}>Menu</Text>
+            </Pressable>
+          </View>
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
@@ -75,18 +103,99 @@ function random() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: "center", justifyContent: "center" },
-  title: { fontSize: 28, fontWeight: "bold" },
-  input: {
-    borderWidth: 1,
-    width: 200,
-    padding: 10,
-    marginVertical: 10,
+  container: {
+    flex: 1,
   },
-  btn: {
-    padding: 10,
-    backgroundColor: "#eee",
+  safeArea: {
+    flex: 1,
+  },
+  content: {
+    width: "100%",
+    maxWidth: 390,
+    alignSelf: "center",
+    paddingHorizontal: 16,
+    paddingTop: 42,
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 18,
+  },
+  title: {
+    color: "#FFFFFF",
+    fontSize: 34,
+    fontWeight: "900",
+    textAlign: "center",
+  },
+  subtitle: {
+    color: "#FFF5EE",
+    fontSize: 15,
+    marginTop: 8,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  attempts: {
+    color: "#FFE3C7",
+    fontSize: 14,
+    marginTop: 4,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  boardCard: {
+    backgroundColor: "#F7EFE5",
+    borderRadius: 22,
+    padding: 20,
+    width: "100%",
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+    alignItems: "center",
+  },
+  input: {
+    borderWidth: 2,
+    borderColor: "#F2B8A0",
+    borderRadius: 12,
+    width: "80%",
+    padding: 12,
+    marginVertical: 10,
+    fontSize: 18,
+    textAlign: "center",
+    backgroundColor: "#FFF8F0",
+    color: "#111827",
+  },
+  submitBtn: {
+    backgroundColor: "#F6A623",
+    borderRadius: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
     marginTop: 10,
-    borderRadius: 8,
+    alignItems: "center",
+  },
+  submitText: {
+    color: "#FFFFFF",
+    fontWeight: "800",
+    fontSize: 16,
+  },
+  actions: {
+    flexDirection: "row",
+    gap: 12,
+    marginTop: 14,
+    width: "100%",
+    alignSelf: "center",
+  },
+  actionBtn: {
+    flex: 1,
+    backgroundColor: "#FFF8F0",
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  actionText: {
+    color: "#111827",
+    fontWeight: "800",
+    fontSize: 15,
   },
 });

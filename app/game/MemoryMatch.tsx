@@ -2,7 +2,9 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { Stack, router } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { saveHighScore } from "../../services/storage";
 
 type Card = {
   id: number;
@@ -29,10 +31,11 @@ export default function MemoryMatch() {
   const [flippedIndexes, setFlippedIndexes] = useState<number[]>([]);
   const [moves, setMoves] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [savedScore, setSavedScore] = useState(false);
 
   const allMatched = useMemo(
     () => cards.length > 0 && cards.every((card) => card.matched),
-    [cards]
+    [cards],
   );
 
   useEffect(() => {
@@ -52,8 +55,8 @@ export default function MemoryMatch() {
           prev.map((card, index) =>
             index === firstIndex || index === secondIndex
               ? { ...card, matched: true }
-              : card
-          )
+              : card,
+          ),
         );
         setFlippedIndexes([]);
         setBusy(false);
@@ -71,6 +74,22 @@ export default function MemoryMatch() {
       return () => clearTimeout(timer);
     }
   }, [flippedIndexes, cards]);
+
+  useEffect(() => {
+    if (!allMatched || savedScore) return;
+
+    async function persistScore() {
+      await saveHighScore({
+        gameId: "memory-match",
+        score: moves,
+        scoreLabel: "Moves",
+        description: `${moves} moves`,
+      });
+      setSavedScore(true);
+    }
+
+    persistScore();
+  }, [allMatched, moves, savedScore]);
 
   function handlePress(index: number) {
     if (busy) return;
@@ -132,7 +151,9 @@ export default function MemoryMatch() {
                   ]}
                   onPress={() => handlePress(index)}
                 >
-                  <Text style={styles.cardText}>{faceUp ? card.symbol : "?"}</Text>
+                  <Text style={styles.cardText}>
+                    {faceUp ? card.symbol : "?"}
+                  </Text>
                 </Pressable>
               );
             })}
@@ -142,7 +163,9 @@ export default function MemoryMatch() {
         <View style={styles.actions}>
           <Pressable style={styles.actionBtn} onPress={resetGame}>
             <Ionicons name="refresh-outline" size={16} color="#DC2626" />
-            <Text style={[styles.actionText, { color: "#DC2626" }]}>Restart</Text>
+            <Text style={[styles.actionText, { color: "#DC2626" }]}>
+              Restart
+            </Text>
           </Pressable>
 
           <Pressable style={styles.actionBtn} onPress={goMenu}>

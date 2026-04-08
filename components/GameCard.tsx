@@ -5,6 +5,9 @@ type Props = {
   title: string;
   description: string;
   category: string;
+  icon?: React.ComponentProps<typeof Ionicons>["name"];
+  bg?: string;
+  iconBg?: string;
   isFavorite?: boolean;
   onPress: () => void;
   onToggleFavorite?: () => void;
@@ -38,14 +41,25 @@ export default function GameCard({
   title,
   description,
   category,
+  icon,
+  bg,
+  iconBg,
   isFavorite = false,
   onPress,
   onToggleFavorite,
 }: Props) {
-  const theme = getCardColors(title);
+  const cardColors = getCardColors(title);
+  const theme = {
+    bg: bg ?? cardColors.bg,
+    iconBg: iconBg ?? cardColors.iconBg,
+    icon: icon ?? cardColors.icon,
+  };
 
   return (
-    <Pressable style={[styles.card, { backgroundColor: theme.bg }]} onPress={onPress}>
+    <Pressable
+      style={[styles.card, { backgroundColor: theme.bg }]}
+      onPress={onPress}
+    >
       <View style={styles.left}>
         <View style={[styles.iconWrap, { backgroundColor: theme.iconBg }]}>
           <Ionicons name={theme.icon} size={28} color="#fff" />

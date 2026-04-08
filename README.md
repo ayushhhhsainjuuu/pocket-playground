@@ -1,85 +1,80 @@
-\# Pocket Playground
+# Pocket Playground
 
-
-
-\*\*Team Name:\*\* App-solutely Perfect  
-
-\*\*Course:\*\* Mobile Application Development  
-
-\*\*Phase:\*\* Phase 2 – App Architecture  
-
-
+Pocket Playground is a mobile application built with React Native (Expo). It provides a collection of simple mini-games with responsive UI, haptic feedback, and persistent data storage.
 
 ---
 
+## Features
 
+* Multiple mini-games:
 
-\## Project Overview
-
-
-
-Pocket Playground is a hub-based Android application that launches a collection of small games, tools, and interactive experiences.
-
-
-
-The app is designed to:
-
-\- Allow modular addition of mini-games
-
-\- Explore mobile APIs and sensors
-
-\- Maintain consistent navigation and UI structure
-
-\- Store basic persistent data such as high scores
-
-
+  * Tic Tac Toe
+  * Guess the Number
+  * Memory Match
+* Haptic feedback for user interactions
+* Favorites system
+* Persistent storage using AsyncStorage
+* User settings (sound and vibration toggles)
+* High score tracking
 
 ---
 
+## Tech Stack
 
-
-\## Architecture Decisions
-
-
-
-The following architecture decisions were documented:
-
-
-
-\- ADR-001: Development Framework (React Native)
-
-\- ADR-002: Navigation Strategy (Hub + Stack Navigation)
-
-\- ADR-003: Hardware Features (Motion Sensors, Vibration, Audio)
-
-\- ADR-004: Data Storage (Local Storage)
-
-
-
-All architecture records are located in:
+* React Native (Expo)
+* Expo Router
+* TypeScript
+* AsyncStorage
+* Expo Haptics
 
 ---
 
-## Repository Structure
-pocket-playground/
-│
-├── README.md
-└── docs/
-├── phase-1/
-└── phase-2/
-├── architecture-decision-records/
-├── Attribution-List.md
-└── Progress-Report-Phase-2.md
+## Project Structure
 
+```
+app/
+  game/
+    [id].tsx
 
+components/
+  game/
+    TicTacToe.tsx
+    GuessNumber.tsx
+    MemoryMatch.tsx
+
+services/
+  storage.ts
+```
 
 ---
 
-## Status
+## How to Run
 
-Phase 2 documentation is complete.  
-The project is ready to proceed to Phase 3 – UI Mock-Up.
+```
+npx expo start
+```
 
+Run the app using:
 
+* Expo Go (recommended)
+* Android emulator
+* iOS simulator
 
+---
 
+## Haptics
+
+The application uses expo-haptics to provide tactile feedback:
+
+* Tap: light feedback
+* Win: success notification feedback
+* Reset: medium impact feedback
+
+Note: Haptics may not function properly on emulators. Testing on a physical device is recommended.
+
+---
+
+## Author
+
+Ayush Sainju
+Software Development Student, SAIT

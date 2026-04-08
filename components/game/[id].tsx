@@ -1,8 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
-import { Text, View } from "react-native";
-import GuessNumber from "../../components/game/GuessNumber";
-import MemoryMatch from "../../components/game/MemoryMatch";
-import TicTacToe from "../../components/game/TicTacToe";
+import GuessNumber from "./GuessNumber";
+import MemoryMatch from "./MemoryMatch";
+import TicTacToe from "./TicTacToe";
 
 export default function GameScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -11,9 +10,5 @@ export default function GameScreen() {
   if (id === "guess-number") return <GuessNumber />;
   if (id === "memory-match") return <MemoryMatch />;
 
-  return (
-    <View>
-      <Text>Game not found</Text>
-    </View>
-  );
+  return null;
 }

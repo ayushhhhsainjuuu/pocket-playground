@@ -17,22 +17,30 @@ export default function HomeScreen() {
 
   async function goToHighScores() {
     await Haptics.selectionAsync();
+    router.push("/high-scores");
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerIcon}>
-        <Ionicons name="game-controller-outline" size={24} color="#FF5A1F" />
-      </View>
-
-      <Text style={styles.title}>Pocket{"\n"}Playground</Text>
-      <Text style={styles.subtitle}>Choose your adventure!</Text>
-
       <FlatList
         data={games}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
+        ListHeaderComponent={
+          <View style={styles.headerWrap}>
+            <View style={styles.headerIcon}>
+              <Ionicons
+                name="game-controller-outline"
+                size={28}
+                color="#FF5A1F"
+              />
+            </View>
+
+            <Text style={styles.title}>Pocket{"\n"}Playground</Text>
+            <Text style={styles.subtitle}>Choose your adventure!</Text>
+          </View>
+        }
         renderItem={({ item }) => (
           <GameCard
             title={item.title}
@@ -45,7 +53,7 @@ export default function HomeScreen() {
         )}
         ListFooterComponent={
           <Pressable style={styles.highScoreBtn} onPress={goToHighScores}>
-            <Ionicons name="trophy-outline" size={16} color="#D97706" />
+            <Ionicons name="trophy-outline" size={18} color="#D97706" />
             <Text style={styles.highScoreText}>View High Scores</Text>
           </Pressable>
         }
@@ -58,12 +66,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F4DD80",
+  },
+  listContent: {
     paddingHorizontal: 16,
-    paddingTop: 24,
+    paddingTop: 26,
+    paddingBottom: 36,
+  },
+  headerWrap: {
+    marginBottom: 26,
   },
   headerIcon: {
-    marginBottom: 10,
-    marginTop: 4,
+    marginBottom: 18,
+    marginLeft: 2,
   },
   title: {
     fontSize: 34,
@@ -73,22 +87,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 17,
     color: "#4B5563",
     textAlign: "center",
-    marginTop: 12,
-    marginBottom: 24,
-  },
-  listContent: {
-    paddingBottom: 30,
+    marginTop: 18,
+    marginBottom: 12,
   },
   highScoreBtn: {
-    marginTop: 8,
+    marginTop: 14,
     backgroundColor: "#F7F2E8",
     borderWidth: 1.5,
     borderColor: "#F0B36E",
-    borderRadius: 10,
-    height: 46,
+    borderRadius: 14,
+    minHeight: 56,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",

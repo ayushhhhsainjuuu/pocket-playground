@@ -3,6 +3,7 @@ import * as Haptics from "expo-haptics";
 import { Stack, router } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { recordMemoryMatchScore } from "../../services/storage";
 
 type Card = {
   id: number;
@@ -13,15 +14,13 @@ type Card = {
 const SYMBOLS = ["🍎", "⭐", "🎈", "🚗", "🐶", "⚽"];
 
 function createDeck(): Card[] {
-  const doubled = [...SYMBOLS, ...SYMBOLS]
+  return [...SYMBOLS, ...SYMBOLS]
     .map((symbol, index) => ({
       id: index + 1,
       symbol,
       matched: false,
     }))
     .sort(() => Math.random() - 0.5);
-
-  return doubled;
 }
 
 export default function MemoryMatch() {
@@ -34,6 +33,16 @@ export default function MemoryMatch() {
     () => cards.length > 0 && cards.every((card) => card.matched),
     [cards]
   );
+
+  useEffect(() => {
+    async function saveScore() {
+      if (allMatched && moves > 0) {
+        await recordMemoryMatchScore(moves);
+      }
+    }
+
+    saveScore();
+  }, [allMatched, moves]);
 
   useEffect(() => {
     if (flippedIndexes.length !== 2) return;

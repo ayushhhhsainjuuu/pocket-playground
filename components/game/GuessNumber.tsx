@@ -10,6 +10,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { playSoundEffect } from "../../services/sound";
 import { recordGuessNumberScore } from "../../services/storage";
 
 function randomNumber() {
@@ -28,12 +29,14 @@ export default function GuessNumber() {
     if (!guess.trim() || Number.isNaN(value)) {
       setMessage("Please enter a valid number.");
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+      await playSoundEffect();
       return;
     }
 
     if (value < 1 || value > 100) {
       setMessage("Enter a number from 1 to 100.");
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+      await playSoundEffect();
       return;
     }
 
@@ -44,6 +47,7 @@ export default function GuessNumber() {
       setMessage(`Correct! You got it in ${nextAttempts} tries.`);
       await recordGuessNumberScore(nextAttempts);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      await playSoundEffect();
       return;
     }
 
@@ -54,6 +58,7 @@ export default function GuessNumber() {
     }
 
     await Haptics.selectionAsync();
+    await playSoundEffect();
     setGuess("");
   }
 
@@ -63,10 +68,12 @@ export default function GuessNumber() {
     setAttempts(0);
     setMessage("");
     await Haptics.selectionAsync();
+    await playSoundEffect();
   }
 
   async function handleMenu() {
     await Haptics.selectionAsync();
+    await playSoundEffect();
     router.push("/");
   }
 

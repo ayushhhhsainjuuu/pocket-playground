@@ -4,6 +4,7 @@ import { Stack, router } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { playSoundEffect } from "../../services/sound";
 import { saveHighScore } from "../../services/storage";
 
 type Card = {
@@ -91,7 +92,7 @@ export default function MemoryMatch() {
     persistScore();
   }, [allMatched, moves, savedScore]);
 
-  function handlePress(index: number) {
+  async function handlePress(index: number) {
     if (busy) return;
     if (flippedIndexes.includes(index)) return;
     if (cards[index].matched) return;
@@ -104,19 +105,22 @@ export default function MemoryMatch() {
       setMoves((prev) => prev + 1);
     }
 
-    Haptics.selectionAsync();
+    await Haptics.selectionAsync();
+    await playSoundEffect();
   }
 
-  function resetGame() {
+  async function resetGame() {
     setCards(createDeck());
     setFlippedIndexes([]);
     setMoves(0);
     setBusy(false);
-    Haptics.selectionAsync();
+    await Haptics.selectionAsync();
+    await playSoundEffect();
   }
 
-  function goMenu() {
-    Haptics.selectionAsync();
+  async function goMenu() {
+    await Haptics.selectionAsync();
+    await playSoundEffect();
     router.push("/");
   }
 

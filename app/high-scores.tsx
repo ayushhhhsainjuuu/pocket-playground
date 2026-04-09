@@ -2,26 +2,66 @@ import { Ionicons } from "@expo/vector-icons";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { getHighScores, HighScores } from "../services/storage";
+import { getHighScores, HighScoreEntry } from "../services/storage";
 
-const defaultScores: HighScores = {
+type ProcessedScores = {
+  ticTacToeWins: { X: number; O: number };
+  guessNumberBestAttempts: number | null;
+  memoryMatchBestMoves: number | null;
+};
+
+const defaultScores: ProcessedScores = {
   ticTacToeWins: { X: 0, O: 0 },
   guessNumberBestAttempts: null,
   memoryMatchBestMoves: null,
 };
 
 export default function HighScoresScreen() {
-  const [scores, setScores] = useState<HighScores>(defaultScores);
+  const [scores, setScores] = useState<ProcessedScores>(defaultScores);
 
   useFocusEffect(
     useCallback(() => {
       loadScores();
-    }, [])
+    }, []),
   );
 
   async function loadScores() {
-    const stored = await getHighScores();
-    setScores(stored);
+    const stored: HighScoreEntry[] = await getHighScores();
+    const processed: ProcessedScores = {
+      ticTacToeWins: { X: 0, O: 0 },
+      guessNumberBestAttempts: null,
+      memoryMatchBestMoves: null,
+    };
+
+    // Process TicTacToe wins
+    const ticTacToeWins = stored.filter(
+      (entry) => entry.gameId === "tic-tac-toe",
+    );
+    ticTacToeWins.forEach((entry) => {
+      if (entry.description.includes("Won as X")) {
+        processed.ticTacToeWins.X += 1;
+      } else if (entry.description.includes("Won as O")) {
+        processed.ticTacToeWins.O += 1;
+      }
+    });
+
+    // Process GuessNumber best attempts (lowest score)
+    const guessNumberScores = stored
+      .filter((entry) => entry.gameId === "guess-number")
+      .map((entry) => entry.score)
+      .sort((a, b) => a - b);
+    processed.guessNumberBestAttempts =
+      guessNumberScores.length > 0 ? guessNumberScores[0] : null;
+
+    // Process MemoryMatch (assuming similar structure)
+    const memoryMatchScores = stored
+      .filter((entry) => entry.gameId === "memory-match")
+      .map((entry) => entry.score)
+      .sort((a, b) => a - b);
+    processed.memoryMatchBestMoves =
+      memoryMatchScores.length > 0 ? memoryMatchScores[0] : null;
+
+    setScores(processed);
   }
 
   return (
@@ -53,9 +93,7 @@ export default function HighScoresScreen() {
         <View style={styles.row}>
           <Ionicons name="flower-outline" size={18} color="#FF3B4A" />
           <Text style={styles.label}>Memory Match Best</Text>
-          <Text style={styles.value}>
-            {scores.memoryMatchBestMoves ?? "-"}
-          </Text>
+          <Text style={styles.value}>{scores.memoryMatchBestMoves ?? "-"}</Text>
         </View>
       </View>
 

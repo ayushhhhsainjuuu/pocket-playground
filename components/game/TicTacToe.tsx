@@ -3,6 +3,7 @@ import * as Haptics from "expo-haptics";
 import { Stack, router } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { playSoundEffect } from "../../services/sound";
 import { recordTicTacToeWin } from "../../services/storage";
 
 type Player = "X" | "O";
@@ -36,7 +37,7 @@ export default function TicTacToe() {
         setScoreSaved(true);
 
         await Haptics.notificationAsync(
-          Haptics.NotificationFeedbackType.Success
+          Haptics.NotificationFeedbackType.Success,
         );
       }
     }
@@ -53,6 +54,7 @@ export default function TicTacToe() {
     setBoard(nextBoard);
     setIsXTurn((prev) => !prev);
     await Haptics.selectionAsync();
+    await playSoundEffect();
   }
 
   async function handleReset() {
@@ -60,10 +62,12 @@ export default function TicTacToe() {
     setIsXTurn(true);
     setScoreSaved(false);
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    await playSoundEffect();
   }
 
   async function handleMenu() {
     await Haptics.selectionAsync();
+    await playSoundEffect();
     router.push("/");
   }
 
@@ -78,8 +82,8 @@ export default function TicTacToe() {
             {winner
               ? `Winner: ${winner}`
               : isDraw
-              ? "It's a draw!"
-              : `Current Turn: ${isXTurn ? "X" : "O"}`}
+                ? "It's a draw!"
+                : `Current Turn: ${isXTurn ? "X" : "O"}`}
           </Text>
         </View>
 
@@ -91,7 +95,10 @@ export default function TicTacToe() {
               return (
                 <Pressable
                   key={index}
-                  style={[styles.cell, isWinningCell ? styles.winningCell : null]}
+                  style={[
+                    styles.cell,
+                    isWinningCell ? styles.winningCell : null,
+                  ]}
                   onPress={() => handlePress(index)}
                 >
                   <Text

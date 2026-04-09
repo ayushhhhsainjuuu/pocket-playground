@@ -88,3 +88,21 @@ export async function clearAllStorage() {
   await AsyncStorage.removeItem(FAVORITES_KEY);
   await AsyncStorage.removeItem(SETTINGS_KEY);
 }
+
+export async function recordGuessNumberScore(attempts: number) {
+  await saveHighScore({
+    gameId: "guess-number",
+    score: attempts,
+    scoreLabel: "attempts",
+    description: `Guessed the number in ${attempts} attempts`,
+  });
+}
+
+export async function recordTicTacToeWin(winner: "X" | "O") {
+  await saveHighScore({
+    gameId: "tic-tac-toe",
+    score: 1,
+    scoreLabel: "wins",
+    description: `Won as ${winner}`,
+  });
+}

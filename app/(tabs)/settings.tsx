@@ -39,7 +39,7 @@ export default function SettingsScreen() {
 
   async function updateSetting<K extends keyof SettingsState>(
     key: K,
-    value: SettingsState[K]
+    value: SettingsState[K],
   ) {
     const updated = { ...settings, [key]: value };
     setSettings(updated);
@@ -80,7 +80,9 @@ export default function SettingsScreen() {
           </View>
           <Switch
             value={settings.soundEnabled}
-            onValueChange={(value) => updateSetting("soundEnabled", value)}
+            onValueChange={(value: boolean) =>
+              updateSetting("soundEnabled", value)
+            }
           />
         </View>
       </View>
@@ -88,16 +90,14 @@ export default function SettingsScreen() {
       <View style={styles.card}>
         <View style={styles.row}>
           <View style={styles.labelWrap}>
-            <Ionicons
-              name="phone-portrait-outline"
-              size={18}
-              color="#FF4A1C"
-            />
+            <Ionicons name="phone-portrait-outline" size={18} color="#FF4A1C" />
             <Text style={styles.label}>Enable Vibration</Text>
           </View>
           <Switch
             value={settings.vibrationEnabled}
-            onValueChange={(value) => updateSetting("vibrationEnabled", value)}
+            onValueChange={(value: boolean) =>
+              updateSetting("vibrationEnabled", value)
+            }
           />
         </View>
       </View>
